@@ -1,0 +1,7 @@
+{
+  "name": "s3upload",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
