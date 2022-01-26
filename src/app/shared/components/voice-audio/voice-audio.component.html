@@ -1,0 +1,3 @@
+<audio *ngIf="!!audioURL" controls name="media" style="width: 230px;">
+  <source [src]="audioURL | safe: 'url'">
+</audio>

@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Blank
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-button (click)="takePicture()">
+      Abrir Camara
+    </ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-button (click)="presentPopover()">
+      Subir Audio
+    </ion-button>
+  </ion-item>
+
+  <ion-list>
+    <ion-item *ngFor="let item of list">
+      <a [href]="item" target="_blank">{{item}}</a>
+    </ion-item>
+  </ion-list>
+  
+</ion-content>

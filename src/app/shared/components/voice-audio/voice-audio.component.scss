@@ -1,0 +1,106 @@
+ion-spinner {
+  position: relative;
+}
+
+ion-range {
+  --knob-border-radius: 50%;
+  --knob-background: var(--bar-background-active);
+  --knob-box-shadow: none;
+  --knob-size: 15px;
+  --bar-height: 2px;
+  --bar-background: rgba(var(--ion-color-primary-rgb, 56, 128, 255), 0.26);
+  --bar-background-active: #0f6943;
+  --bar-border-radius: 0;
+  --height: 42px;
+  --pin-background: #0f6943;
+  --pin-color: #ffffff;
+
+  --knob-handle-size: calc(var(--knob-size) * 2);
+}
+.voice-timer {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+}
+.range-knob {
+  font-size: 12px;
+  left: 9px !important;
+  top: 12px !important;
+  border-radius: 50% !important;
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  -webkit-box-shadow: 0 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 3px 1px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.13), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  pointer-events: none;
+}
+.range-md .range-knob-handle {
+  left: 0;
+  /* top: 21px; */
+  /* margin-top: -21px; */
+  /* text-align: center; */
+  position: relative;
+  width: 42px;
+  height: 42px;
+}
+
+.loading-voice-spinner {
+  position: relative;
+  padding: 20px;
+  color: #0f694359;
+  width: auto;
+  top: -50px;
+  left: 5px;
+}
+
+.loading-voice {
+  position: relative !important;
+  top: 0 !important;
+  right: 0 !important;
+  float: left !important;
+  margin-top: 0 !important;
+  width: 50px;
+  height: 50px;
+}
+.range-ios .range-knob-handle {
+  left: 0;
+  /* top: 21px; */
+  /* margin-top: -21px; */
+  /* text-align: center; */
+  position: relative;
+  width: 42px;
+  height: 42px;
+}
+.play-pause-btn {
+  /*  display: inline-block;
+    width: 10px;
+    height: 80px;
+    box-shadow: 0 0 10px #999;
+    font-size: 2.3em;*/
+  width: 50px;
+  height: 50px;
+  border-radius: 90%;
+  float: left;
+}
+
+.skip-btn {
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  box-shadow: 0 0 10px #999;
+}
+
+[text-center] {
+  text-align: center !important;
+}
+
+.icon-download {
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  color: lightgray;
+  font-size: 35px;
+}

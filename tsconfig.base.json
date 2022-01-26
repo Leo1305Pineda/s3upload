@@ -1,0 +1,79 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "types": [
+      "node",
+      "jasmine"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "emitDecoratorMetadata": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2015",
+      "dom"
+    ],
+    "paths": {
+      "*": [
+        "types/*"
+      ],
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@projects/*": [
+        "projects/*"
+      ],
+      "@env/*": [
+        "src/environments/*"
+      ],
+      "@services/*": [
+        "src/app/core/services/*"
+      ],
+      "ion-collapse-header": [
+        "dist/ion-collapse-header"
+      ],
+      "ion-collapse-header/*": [
+        "dist/ion-collapse-header/*"
+      ],
+      "ion-media-cache": [
+        "dist/ion-media-cache/ion-media-cache",
+        "dist/ion-media-cache"
+      ],
+      "ion-timepiker": [
+        "dist/ion-timepiker/ion-timepiker",
+        "dist/ion-timepiker"
+      ],
+      "ion-time-piker": [
+        "dist/ion-time-piker/ion-time-piker",
+        "dist/ion-time-piker"
+      ],
+      "ngx-chronometer": [
+        "dist/ngx-chronometer/ngx-chronometer",
+        "dist/ngx-chronometer"
+      ],
+      "ion-color-picker": [
+        "dist/ion-color-picker/ion-color-picker",
+        "dist/ion-color-picker"
+      ]
+    }
+  },
+  "typedocOptions": {
+    "mode": "modules",
+    "out": "docs"
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
+}

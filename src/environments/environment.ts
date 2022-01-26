@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  AWSregion: 'eu-west-1',
+  AWSaccessKeyId: 'AKIA3UKBXA7ZOGI6JGOX',
+  AWSsecretAccessKey: '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',
+  AWSbucketName: 's3-focus/Focus_Dev',
 };
 
 /*

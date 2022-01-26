@@ -12,12 +12,21 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "es2020",
-    "lib": ["es2018", "dom"]
+    "lib": ["es2018", "dom"],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@projects/*": ["projects/*"],
+      "@env/*": ["src/environments/*"],
+      "@services/*":["src/app/core/services/*"],
+      "typeorm": ["node_modules/typeorm/browser"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "typeRoots": ["node_modules/@types"],
+    "types": ["node"]
   }
 }
