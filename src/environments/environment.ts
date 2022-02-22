@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  project: 's3upload',
   production: false,
   AWSregion: 'eu-west-1',
   AWSaccessKeyId: 'AKIA3UKBXA7ZOGI6JGOX',

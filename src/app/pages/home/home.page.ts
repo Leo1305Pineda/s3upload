@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Camera } from '@capacitor/camera';
-import { Platform, PopoverController } from '@ionic/angular';
+import { ModalController, Platform, PopoverController } from '@ionic/angular';
 import * as S3 from "aws-sdk/clients/s3";
 import { environment } from 'src/environments/environment';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { GlobalService } from 'src/app/core/services/global/global.service';
-import { VoicePopoverComponent } from 'src/app/shared/components';
+import { ModalVideoComponent, VoicePopoverComponent } from 'src/app/shared/components';
 declare const navigator;
 
 @Component({
@@ -30,12 +30,14 @@ export class HomePage {
   list: any[] = [];
 
   isPresentPopover: boolean;
+  isModal: boolean;
 
   constructor(
     private androidPermissions: AndroidPermissions,
     private platform: Platform,
     private popoverCtrl: PopoverController,
-    private globals: GlobalService
+    private globals: GlobalService,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -185,6 +187,17 @@ export class HomePage {
         console.warn('we cannot detected a valid record voice function')
       }
     }
+  }
+
+  async modalVideo() {
+    if (this.isModal) {
+      return;
+    }
+    const modal = await this.modalCtrl.create({component: ModalVideoComponent});
+    modal.onDidDismiss().then(() => {
+      this.isModal = false;
+    });
+    return await modal.present();
   }
 
 }

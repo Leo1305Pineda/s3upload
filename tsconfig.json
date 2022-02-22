@@ -27,6 +27,6 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
     "typeRoots": ["node_modules/@types"],
-    "types": ["node"]
+    "types": ["node", "dom-mediacapture-record"]
   }
 }

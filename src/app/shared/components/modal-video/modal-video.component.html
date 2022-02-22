@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button fill="clear" shape="round" color="primary" (click)="onCloseModal(null)">
+      Cerrar
+    </ion-button>
+  </ion-toolbar>
+</ion-header>
+<ion-content overflow-scroll=“true”>
+  <form [formGroup]="createVideoPostForm">
+
+    <ion-button (click)="captureVideo()" style="margin: 1em; height: 60px" color="light" class="ion-margin-horizontal"
+      expand="block" outline>
+      <ion-icon style="margin-right: 1em" name="videocam-outline"> </ion-icon>
+      Video
+    </ion-button>
+
+    <ion-row class="ion-margin-top">
+      <ion-col size="8">
+        <ion-input [value]="newTag" placeholder="Add a new hashtag" clearInput (ionChange)="onChangeNewTag($event)"
+          (keyup.enter)="onEnterNewTag()"></ion-input>
+      </ion-col>
+      <ion-col size="4">
+        <ion-button color="success" (click)="onEnterNewTag()" expand="full" shape="round">Add</ion-button>
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12">
+        <ion-label *ngIf="tags.length > 0" color="secondary">Tags:</ion-label>
+        <ion-chip *ngFor="let tag of tags; index as i" (click)="onDeleteTag(i)">
+          <ion-label color="secondary">#{{ tag }}</ion-label>
+        </ion-chip>
+      </ion-col>
+      <ion-col size="12">
+        <ion-input placeholder="Description" formControlName="description"></ion-input>
+
+      </ion-col>
+      <ion-col size="12">
+        <hr>
+        <ion-button class="ion-margin" color="success" (click)="createVideoPost()" style="margin-top: 2em"
+          expand="block" [disabled]="disableButton">Save</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+
+  <ion-row>
+    <ion-col size="12" style="text-align:center;">
+      <video *ngIf="srcBlob" controls="controls" preload="metadata" autoplay="autoplay"
+        webkit-playsinline="webkit-playsinline" width="300" height="300" class="videoPlayer">
+        <source [src]="srcBlob" type="video/mp4" />
+      </video>
+    </ion-col>
+  </ion-row>
+
+</ion-content>

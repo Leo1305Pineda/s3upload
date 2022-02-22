@@ -7,7 +7,8 @@ import {
     SafePipe 
 } from '../pipes/safe/safe.pipe';
 /* Components */
-import { 
+import {
+    ModalVideoComponent,
     TimerComponent,
     VoiceAudioComponent, 
     VoicePopoverComponent 
@@ -22,23 +23,27 @@ import {
         IonicModule,
     ],
     declarations: [
-        SafePipe,
+        ModalVideoComponent,
         VoiceAudioComponent,
         VoicePopoverComponent,
         TimerComponent,
         /** Directives */
+
+        /** Pipe */
+        SafePipe,
     ],
     exports: [
-        SafePipe,
+        ModalVideoComponent,
         VoiceAudioComponent,
         VoicePopoverComponent,
-        TimerComponent,
-        // Module
-    
+        TimerComponent,    
         /** Directives */
-      
+
+        /** Pipe */
+        SafePipe,
     ],
     entryComponents: [
+        ModalVideoComponent,
         VoicePopoverComponent,
     ],
     providers: [
