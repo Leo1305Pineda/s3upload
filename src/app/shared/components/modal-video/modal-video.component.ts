@@ -7,8 +7,12 @@ import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { environment } from '@env/environment';
 import * as S3 from 'aws-sdk/clients/s3';
+import { MediaObject } from '@ionic-native/media/ngx';
 
 const MEDIA_FILES_KEY = 'mediaFiles';
+declare let window: any; // <--- Declare it like this
+declare let navigator: any; // <--- Declare it like this
+declare var MediaRecorder: any;
 
 @Component({
   selector: 'app-modal-video',
@@ -66,13 +70,51 @@ export class ModalVideoComponent implements OnInit {
     return this.platform.is('cordova') && (this.platform.is('android') || this.platform.is('ios'));
   }
 
-  async ngOnInit() {
+  async ngOnInit(force_video_web = true) {
     this.createVideoPostForm = this.formBuilder.group({
       description: ['', [Validators.required]],
     });
+
     const storage = await this.storage.create();
     this._storage = storage;
-    this.captureVideo();
+    if (this.isMobile && !force_video_web) {
+      this.captureVideo();
+    } else {
+      const objectInstance = {};
+      let media = new MediaObject(objectInstance);
+      console.log(media, 'MEDIA')
+      navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
+          const video: any = document.getElementById('stream-video')
+          if (video) {
+            video.srcObject = stream;
+          }
+          console.log(stream)
+
+          const mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start();
+
+          const audioChunks = [];
+          mediaRecorder.addEventListener('dataavailable', event => {
+            audioChunks.push(event.data);
+          });
+
+          mediaRecorder.addEventListener('stop', () => {
+            this.mediaFile = {
+              name: stream.id + '.mp4'
+            }
+            this.blob = new Blob(audioChunks);
+            this.srcBlob = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.blob));
+            console.log(this.blob, 'BLOB', this.srcBlob)
+            debugger;
+
+          });
+          setTimeout(() => {
+            media.stop();
+            mediaRecorder.stop();
+          }, 10000);
+     
+      })
+    }
   }
 
   captureVideo() {
@@ -90,6 +132,7 @@ export class ModalVideoComponent implements OnInit {
       }).then((blob) => {
         this.blob = blob;
         this.srcBlob = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.blob));
+        console.log(this.blob, this.srcBlob, this.mediaFile, 'MEDIACAPTURE')
       }).catch((e) => console.log(e));
     }, (err: CaptureError) => {
       console.error(err)
@@ -110,11 +153,13 @@ export class ModalVideoComponent implements OnInit {
     };
     console.log(this.blob, this.srcBlob, this.mediaFile, data, 'Fetch');
     this.disableButton = true;
-    this.s3.upload(data, (err, data) => {
+    this.s3.upload(data, (err, data: any) => {
       if (err) {
         console.log(err, 'there was an error uploading your file');
       } else {
         console.info('<< EUREKA >>', data);
+        this.srcBlob = data.Location;
+        // this.onCloseModal(data);
       }
       this.disableButton = false;
     });

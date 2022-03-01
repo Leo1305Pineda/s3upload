@@ -39,13 +39,16 @@
       <ion-col size="12">
         <hr>
         <ion-button class="ion-margin" color="success" (click)="createVideoPost()" style="margin-top: 2em"
-          expand="block" [disabled]="disableButton">Save</ion-button>
+          expand="block" [disabled]="!srcBlob">Save</ion-button>
       </ion-col>
     </ion-row>
   </form>
 
   <ion-row>
     <ion-col size="12" style="text-align:center;">
+      <video id="stream-video" *ngIf="!srcBlob" playsinline controls="controls"
+        webkit-playsinline="webkit-playsinline" width="300" height="300" class="videoPlayer">
+      </video>
       <video *ngIf="srcBlob" controls="controls" preload="metadata" autoplay="autoplay"
         webkit-playsinline="webkit-playsinline" width="300" height="300" class="videoPlayer">
         <source [src]="srcBlob" type="video/mp4" />
