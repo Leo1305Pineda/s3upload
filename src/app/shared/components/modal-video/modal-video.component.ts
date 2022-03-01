@@ -70,7 +70,7 @@ export class ModalVideoComponent implements OnInit {
     return this.platform.is('cordova') && (this.platform.is('android') || this.platform.is('ios'));
   }
 
-  async ngOnInit(force_video_web = true) {
+  async ngOnInit(force_video_web = false) {
     this.createVideoPostForm = this.formBuilder.group({
       description: ['', [Validators.required]],
     });
@@ -80,40 +80,82 @@ export class ModalVideoComponent implements OnInit {
     if (this.isMobile && !force_video_web) {
       this.captureVideo();
     } else {
-      const objectInstance = {};
-      let media = new MediaObject(objectInstance);
-      console.log(media, 'MEDIA')
-      navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
-          const video: any = document.getElementById('stream-video')
-          if (video) {
-            video.srcObject = stream;
-          }
-          console.log(stream)
-
-          const mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start();
-
-          const audioChunks = [];
-          mediaRecorder.addEventListener('dataavailable', event => {
-            audioChunks.push(event.data);
-          });
-
-          mediaRecorder.addEventListener('stop', () => {
-            this.mediaFile = {
-              name: stream.id + '.mp4'
+      navigator.getUserMedia = (navigator.getUserMedia ||
+        navigator.webkitGetUserMedia ||
+        navigator.mozGetUserMedia ||
+        navigator.msGetUserMedia ||
+        (navigator.mediaDevices ? navigator.mediaDevices.getUserMedia : undefined));
+      const stateRecord = (permissionStatus) => {
+        if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+          const objectInstance = {};
+          let media = new MediaObject(objectInstance);
+          console.log(media, 'MEDIA')
+          navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
+            const video: any = document.getElementById('stream-video')
+            if (video) {
+              video.srcObject = stream;
             }
-            this.blob = new Blob(audioChunks);
-            this.srcBlob = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.blob));
-            console.log(this.blob, 'BLOB', this.srcBlob)
-            debugger;
+            console.log(stream)
 
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+
+            const audioChunks = [];
+            mediaRecorder.addEventListener('dataavailable', event => {
+              audioChunks.push(event.data);
+            });
+
+            mediaRecorder.addEventListener('stop', () => {
+              this.mediaFile = {
+                name: stream.id + '.mp4'
+              }
+              this.blob = new Blob(audioChunks);
+              this.srcBlob = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(this.blob));
+              console.log(this.blob, 'BLOB', this.srcBlob)
+              // debugger;
+
+            });
+            setTimeout(() => {
+              media.stop();
+              mediaRecorder.stop();
+            }, 10000);
+
+          })
+        } else if (permissionStatus.state === 'denied') {
+          // this.globals.warningToast('Activa el permiso del microfono.');
+          window.open("https://jobseekers.workable.com/hc/es/articles/360030520234-Permitir-acceso-a-la-c%C3%A1mara-y-el-micr%C3%B3fono", "_blank")
+        }
+      };
+      if (navigator.permissions) {
+        navigator.permissions.query(
+          { name: 'camera' },
+          { name: 'microphone' }
+          // { name: 'geolocation' }
+          // { name: 'notifications' }
+          // { name: 'midi', sysex: false }
+          // { name: 'midi', sysex: true }
+          // { name: 'push', userVisibleOnly: true }
+          // { name: 'push' } // without userVisibleOnly isn't supported in chrome M45, yet
+        ).then((permissionStatus) => {
+          stateRecord(permissionStatus);
+          permissionStatus.onchange = () => {
+            stateRecord(permissionStatus);
+          };
+        });
+      } else if (navigator.getUserMedia) {
+        try {
+          await navigator.getUserMedia({ audio: true, video: true }, () => stateRecord({state: 'granted'}), (err) => {
+            console.error(err)
           });
-          setTimeout(() => {
-            media.stop();
-            mediaRecorder.stop();
-          }, 10000);
-     
-      })
+        } catch (error) {
+          //this.globals.errorToast('Por favor activa los permisos de grabación de audio en la aplicación')
+        }
+      } else {
+        console.warn('we cannot detected a valid record voice function')
+      }
+
+
+
     }
   }
 
@@ -124,7 +166,11 @@ export class ModalVideoComponent implements OnInit {
     }
     this.mediaCapture.captureVideo(options).then((res: MediaFile[]) => {
       this.mediaFile = res[0];
-      this.srcTest = this.webview.convertFileSrc(this.mediaFile.fullPath)
+      if (this.platform.is('android')) {
+        this.srcTest = this.webview.convertFileSrc(this.mediaFile.fullPath)
+      } else {
+        this.srcTest = this.webview.convertFileSrc(this.mediaFile.fullPath.replace('file:///', '/'))
+      }
       fetch(this.srcTest, {
         headers: {},
       }).then((response) => {
